@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Wellness Oracle{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 4rem auto;">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Login to Wellness Oracle</h2>
+    
+    <form method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required 
+               placeholder="Enter your username" autocomplete="username">
+        
+        <button type="submit" class="btn" style="width: 100%;">Login / Sign Up</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 1.5rem; color: #666; font-size: 0.9rem;">
+        New here? Just enter a username to create an account automatically!
+    </p>
+</div>
+{% endblock %}

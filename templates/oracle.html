@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Oracle Chat - Wellness Oracle{% endblock %}
+
+{% block extra_css %}
+<style>
+    #chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    #chat-messages {
+        height: 500px;
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .message {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        border-radius: 12px;
+        max-width: 80%;
+    }
+    
+    .user-message {
+        background: #667eea;
+        color: white;
+        margin-left: auto;
+        text-align: right;
+    }
+    
+    .oracle-message {
+        background: white;
+        color: #333;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    #chat-input {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    #query-input {
+        flex: 1;
+        margin-bottom: 0;
+    }
+    
+    #send-btn {
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="chat-container">
+    <div class="card">
+        <h1>💬 Ask Your Wellness Oracle</h1>
+        <p style="color: #666; margin-bottom: 1.5rem;">
+            Ask me anything about your wellness, sleep patterns, mood trends, or get advice!
+        </p>
+        
+        <div id="chat-messages">
+            <div class="message oracle-message">
+                <strong>Oracle:</strong><br>
+                Hello! I'm your wellness oracle. I can help you understand your health patterns, 
+                answer questions about sleep, stress, mood, and more. What would you like to know?
+            </div>
+        </div>
+        
+        <form id="chat-form">
+            <div id="chat-input">
+                <input type="text" id="query-input" name="query" 
+                       placeholder="Ask me about your sleep, mood, stress levels..." required>
+                <button type="submit" id="send-btn" class="btn">Send</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="card" style="background: #f8f9fa;">
+        <h3>💡 Try asking:</h3>
+        <ul style="margin-left: 1.5rem; margin-top: 1rem; color: #666;">
+            <li>"How has my sleep been this week?"</li>
+            <li>"What's my burnout risk?"</li>
+            <li>"Give me tips for better sleep"</li>
+            <li>"How's my mood been trending?"</li>
+            <li>"What should I focus on today?"</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const chatForm = document.getElementById('chat-form');
+    const chatMessages = document.getElementById('chat-messages');
+    const queryInput = document.getElementById('query-input');
+    
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const query = queryInput.value.trim();
+        if (!query) return;
+        
+        // Add user message to chat
+        addMessage(query, 'user');
+        queryInput.value = '';
+        
+        // Send query to server
+        try {
+            const response = await fetch('{{ url_for("oracle") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ query })
+            });
+            
+            const data = await response.json();
+            
+            // Add oracle response
+            addMessage(data.response, 'oracle');
+        } catch (error) {
+            addMessage('Sorry, I encountered an error. Please try again.', 'oracle');
+            console.error('Error:', error);
+        }
+    });
+    
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        if (sender === 'oracle') {
+            messageDiv.innerHTML = `<strong>Oracle:</strong><br>${text}`;
+        } else {
+            messageDiv.textContent = text;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>
+{% endblock %}

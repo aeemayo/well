@@ -1,0 +1,12 @@
+flask
+requests
+fitbit
+spotipy
+apscheduler
+flask-sqlalchemy
+pillow
+python-dotenv
+requests-oauthlib
+pytest
+openai
+git+https://github.com/sentient-agi/OpenDeepSearch.git

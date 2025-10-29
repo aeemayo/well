@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Wellness Oracle{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 4rem 2rem;">
+    <div class="emoji">🌟</div>
+    <h1>Welcome to Your Wellness Oracle</h1>
+    <p style="font-size: 1.2rem; margin: 2rem 0; color: #666;">
+        Your AI-powered daily health coach. Track your wellness, understand your patterns, 
+        and receive personalized recommendations to live your best life.
+    </p>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{{ url_for('login') }}" class="btn" style="margin-right: 1rem;">Get Started</a>
+        <a href="#features" class="btn btn-secondary">Learn More</a>
+    </div>
+</div>
+
+<div id="features" class="grid" style="margin-top: 3rem;">
+    <div class="card" style="text-align: center;">
+        <div class="emoji">😴</div>
+        <h3>Sleep Tracking</h3>
+        <p>Monitor your sleep quality with Fitbit integration or manual logging.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <div class="emoji">�</div>
+        <h3>Activity Tracking</h3>
+        <p>Connect Fitbit to track steps, activity, and understand how movement affects your wellness.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <div class="emoji">💭</div>
+        <h3>Mood Tracking</h3>
+        <p>Journal your feelings and get AI-powered sentiment analysis.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <div class="emoji">⚡</div>
+        <h3>Burnout Detection</h3>
+        <p>Predict and prevent burnout with intelligent risk assessment.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <div class="emoji">🎵</div>
+        <h3>Mood Playlists</h3>
+        <p>Get personalized Spotify playlists based on your emotional state.</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <div class="emoji">✨</div>
+        <h3>Micro-Habits</h3>
+        <p>Receive actionable 5-minute wellness recommendations daily.</p>
+    </div>
+</div>
+{% endblock %}

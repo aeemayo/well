@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Your Wellness Insights - Wellness Oracle{% endblock %}
+
+{% block content %}
+<div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <h1>✨ Your Personalized Wellness Insights</h1>
+    <p style="font-size: 1.2rem; margin-top: 1rem; opacity: 0.95;">
+        {{ insights['summary'] }}
+    </p>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h2>📊 Today's Stats</h2>
+        <div style="margin-top: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
+                <strong>Sleep:</strong> {{ insights['data_summary']['sleep_hours'] }} hours
+                <span style="padding: 0.25rem 0.75rem; border-radius: 12px; background: #e9ecef; font-size: 0.85rem; margin-left: 0.5rem;">
+                    {{ insights['sleep_quality'] }}
+                </span>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Steps:</strong> {{ "{:,}".format(insights['data_summary']['steps']) }}
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Active Minutes:</strong> {{ insights['data_summary']['active_minutes'] }}
+                <span style="padding: 0.25rem 0.75rem; border-radius: 12px; background: #e9ecef; font-size: 0.85rem; margin-left: 0.5rem;">
+                    {{ insights['activity_level'] }}
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>💭 Emotional State</h2>
+        <div style="margin-top: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
+                <strong>Sentiment:</strong>
+                <span style="padding: 0.5rem 1rem; border-radius: 12px; font-size: 1rem;
+                             background: {% if insights['sentiment'] == 'positive' %}#d4edda
+                                         {% elif insights['sentiment'] == 'negative' %}#f8d7da
+                                         {% else %}#d1ecf1{% endif %};">
+                    {{ insights['sentiment'].title() }}
+                </span>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Primary Emotion:</strong> {{ insights['emotion'].title() }}
+            </div>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: 
+                        {% if insights['burnout_risk'] == 'high' %}#f8d7da
+                        {% elif insights['burnout_risk'] == 'medium' %}#fff3cd
+                        {% else %}#d4edda{% endif %}; border-radius: 8px;">
+                <strong>Burnout Risk:</strong> {{ insights['burnout_risk'].upper() }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎯 Your Personalized Micro-Habits</h2>
+    <p style="color: #666; margin-bottom: 1.5rem;">Small actions you can take right now (5-10 minutes each):</p>
+    
+    <ol style="margin-left: 1.5rem;">
+        {% for habit in insights.micro_habits %}
+        <li style="margin-bottom: 1rem; font-size: 1.1rem; line-height: 1.8;">{{ habit }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+{% if insights.interventions %}
+<div class="card" style="border-left: 4px solid 
+            {% if insights.burnout_risk == 'high' %}#dc3545
+            {% elif insights.burnout_risk == 'medium' %}#ffc107
+            {% else %}#28a745{% endif %};">
+    <h2>⚡ Wellness Interventions</h2>
+    <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+        {% for intervention in insights.interventions %}
+        <li style="margin-bottom: 0.75rem; font-size: 1.05rem;">{{ intervention }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if insights.playlist and insights.playlist.success %}
+<div class="card" style="background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%); color: white;">
+    <h2>🎵 Your Mood Playlist</h2>
+    <p style="margin: 1rem 0;">We created a personalized playlist to match your {{ insights.emotion }} mood!</p>
+    
+    <a href="{{ insights.playlist.playlist_url }}" target="_blank" 
+       style="display: inline-block; padding: 0.75rem 1.5rem; background: white; color: #1DB954; 
+              border-radius: 25px; text-decoration: none; font-weight: bold; margin-top: 1rem;">
+        🎧 Listen on Spotify
+    </a>
+    
+    {% if insights.playlist.tracks %}
+    <div style="margin-top: 2rem; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Featured Tracks:</h3>
+        <ul style="list-style: none;">
+            {% for track in insights.playlist.tracks[:3] %}
+            <li style="margin-bottom: 0.5rem;">🎵 {{ track.name }} - {{ track.artist }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if insights.trends and insights.trends.available %}
+<div class="card">
+    <h2>📈 Your Wellness Trends</h2>
+    <div style="margin-top: 1.5rem;">
+        <p><strong>Average Sleep (last {{ insights.trends.days_analyzed }} days):</strong> 
+           {{ insights.trends.avg_sleep_hours }} hours</p>
+        <p style="margin-top: 0.5rem;"><strong>Mood Trend:</strong> 
+           <span style="text-transform: capitalize;">{{ insights.trends.mood_trend }}</span></p>
+    </div>
+</div>
+{% endif %}
+
+<div class="card" style="text-align: center;">
+    <a href="{{ url_for('dashboard') }}" class="btn">← Back to Dashboard</a>
+    <a href="{{ url_for('log_data') }}" class="btn btn-secondary" style="margin-left: 1rem;">Log Another Entry</a>
+</div>
+{% endblock %}

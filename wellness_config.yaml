@@ -1,0 +1,41 @@
+# Wellness Application Configuration
+# Configuration for wellness orchestrator
+
+agents:
+  ingestion:
+    max_retries: 3
+    timeout: 30
+    
+  analysis:
+    sentiment_threshold: 0.7
+    burnout_threshold: 0.6
+    
+  recommendation:
+    max_habits: 3
+    habit_duration_minutes: 10
+    
+  synthesis:
+    confidence_threshold: 0.8
+
+# Tool configurations
+tools:
+  burnout_predictor:
+    thresholds:
+      sleep_hours_min: 6.0
+      sleep_minimum: 360  # 6 hours in minutes
+      activity_steps_min: 5000
+      activity_minimum: 30  # minutes of active time
+      consecutive_bad_days: 3
+      high_risk_score: 0.7
+      medium_risk_score: 0.4
+  
+  sentiment_analyzer:
+    model: "openrouter"
+    confidence_threshold: 0.6
+
+# API settings
+api:
+  openrouter:
+    model: "deepseek/deepseek-chat"
+    max_tokens: 500
+    temperature: 0.7

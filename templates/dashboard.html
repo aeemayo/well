@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Wellness Oracle{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Welcome back, {{ user.username }}! 👋</h1>
+    <p style="color: #666; margin-top: 0.5rem;">Here's your wellness overview</p>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Quick Actions</h3>
+        <div style="margin-top: 1.5rem;">
+            <a href="{{ url_for('log_data') }}" class="btn" style="display: block; text-align: center; margin-bottom: 1rem;">
+                📝 Log Today's Data
+            </a>
+            <a href="{{ url_for('oracle') }}" class="btn btn-secondary" style="display: block; text-align: center;">
+                💬 Ask Oracle
+            </a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>Integrations</h3>
+        <div style="margin-top: 1.5rem;">
+            {% if user.fitbit_access_token %}
+                <p style="color: #28a745; margin-bottom: 0.5rem;">✓ Fitbit Connected</p>
+            {% else %}
+                <a href="{{ url_for('fitbit_auth') }}" class="btn" style="font-size: 0.9rem;">
+                    Connect Fitbit
+                </a>
+            {% endif %}
+            
+            {% if user.spotify_access_token %}
+                <p style="color: #28a745; margin-top: 1rem;">✓ Spotify Connected</p>
+            {% else %}
+                <a href="{{ url_for('spotify_auth') }}" class="btn btn-secondary" 
+                   style="font-size: 0.9rem; margin-top: 1rem;">
+                    Connect Spotify
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Recent Activity (Last 7 Days)</h2>
+    
+    {% if logs %}
+        <div style="overflow-x: auto; margin-top: 1.5rem;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 1rem; text-align: left;">Date</th>
+                        <th style="padding: 1rem; text-align: left;">Mood</th>
+                        <th style="padding: 1rem; text-align: left;">Sentiment</th>
+                        <th style="padding: 1rem; text-align: left;">Burnout Risk</th>
+                        <th style="padding: 1rem; text-align: left;">Sleep Quality</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 1rem;">{{ log.date.strftime('%Y-%m-%d') }}</td>
+                        <td style="padding: 1rem;">{{ log.emotion or 'N/A' }}</td>
+                        <td style="padding: 1rem;">
+                            <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;
+                                         background: {% if log.sentiment == 'positive' %}#d4edda
+                                                     {% elif log.sentiment == 'negative' %}#f8d7da
+                                                     {% else %}#d1ecf1{% endif %};">
+                                {{ log.sentiment or 'N/A' }}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">
+                            <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;
+                                         background: {% if log.burnout_risk == 'high' %}#f8d7da
+                                                     {% elif log.burnout_risk == 'medium' %}#fff3cd
+                                                     {% else %}#d4edda{% endif %};">
+                                {{ log.burnout_risk or 'N/A' }}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem;">{{ log.sleep_quality or 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="color: #666; margin-top: 1rem;">No wellness data logged yet. Start by <a href="{{ url_for('log_data') }}">logging your first entry</a>!</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Wellness History - Wellness Oracle{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>📅 Your Wellness History</h1>
+    <p style="color: #666; margin-bottom: 2rem;">View all your past wellness check-ins and track your progress</p>
+    
+    {% if logs %}
+        <div style="overflow-x: auto;">
+            {% for log in logs %}
+            <div class="card" style="background: #f8f9fa; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="margin: 0;">{{ log.date.strftime('%B %d, %Y') }}</h3>
+                    <div>
+                        <span style="padding: 0.25rem 0.75rem; border-radius: 12px; background: 
+                                    {% if log.sentiment == 'positive' %}#d4edda
+                                    {% elif log.sentiment == 'negative' %}#f8d7da
+                                    {% else %}#d1ecf1{% endif %}; margin-right: 0.5rem;">
+                            {{ log.sentiment or 'N/A' }}
+                        </span>
+                        <span style="padding: 0.25rem 0.75rem; border-radius: 12px; background: 
+                                    {% if log.burnout_risk == 'high' %}#f8d7da
+                                    {% elif log.burnout_risk == 'medium' %}#fff3cd
+                                    {% else %}#d4edda{% endif %};">
+                            Risk: {{ log.burnout_risk or 'N/A' }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="grid" style="margin-top: 1rem;">
+                    <div>
+                        <h4 style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Mood Note</h4>
+                        <p style="background: white; padding: 1rem; border-radius: 8px;">
+                            {{ log.mood_note or 'No note recorded' }}
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Health Metrics</h4>
+                        <div style="background: white; padding: 1rem; border-radius: 8px;">
+                            <p><strong>Emotion:</strong> {{ log.emotion or 'N/A' }}</p>
+                            <p><strong>Sleep Quality:</strong> {{ log.sleep_quality or 'N/A' }}</p>
+                            <p><strong>Activity Level:</strong> {{ log.activity_level or 'N/A' }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                {% set recs = log.get_recommendations() %}
+                {% if recs and recs.micro_habits %}
+                <div style="margin-top: 1rem;">
+                    <h4 style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Recommendations Given</h4>
+                    <ul style="background: white; padding: 1rem 1rem 1rem 2rem; border-radius: 8px; margin: 0;">
+                        {% for habit in recs.micro_habits[:3] %}
+                        <li>{{ habit }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; color: #666;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+            <p>No wellness data logged yet.</p>
+            <a href="{{ url_for('log_data') }}" class="btn" style="margin-top: 1rem;">Start Logging</a>
+        </div>
+    {% endif %}
+</div>
+
+{% if logs %}
+<div class="card" style="text-align: center;">
+    <a href="{{ url_for('dashboard') }}" class="btn">← Back to Dashboard</a>
+</div>
+{% endif %}
+{% endblock %}
