@@ -81,7 +81,6 @@ wellness-oracle/
 │
 ├── utils/
 │   ├── __init__.py
-│   ├── nutrition.py        # Nutritionix API wrapper
 │   ├── fitbit.py           # Fitbit API wrapper
 │   ├── sentiment.py        # OpenRouter sentiment analysis
 │   └── spotify.py          # Spotify API wrapper
@@ -537,3 +536,4 @@ For questions or issues:
 **Built with ❤️ for better wellness through AI**
 
 MVP Build Time: ~2 weeks | Last Updated: October 2025
+
