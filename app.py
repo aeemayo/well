@@ -96,7 +96,15 @@ def log_data():
         
         try:
             # Run wellness workflow through orchestrator
+            logger.info(f"Running orchestrator for user {user_id}")
             insights = orchestrator.solve(task)
+            logger.info(f"Orchestrator returned: sentiment={insights.get('sentiment')}, emotion={insights.get('emotion')}")
+            
+            # Check if orchestrator returned valid data
+            if not insights or not insights.get('sentiment'):
+                logger.error(f"Orchestrator returned invalid data: {insights}")
+                flash('Error: Unable to process wellness data. Please try again.', 'error')
+                return redirect(url_for('log_data'))
             
             # Save log to database
             log = WellnessLog(
@@ -110,6 +118,8 @@ def log_data():
                 sleep_quality=insights.get('sleep_quality'),
                 activity_level=insights.get('activity_level')
             )
+            
+            logger.info(f"Created log with sentiment={log.sentiment}, emotion={log.emotion}")
             
             # Store JSON data
             if insights.get('data_summary'):
@@ -127,12 +137,14 @@ def log_data():
             
             db.session.add(log)
             db.session.commit()
+            logger.info(f"Successfully committed log to database")
             
             flash('Wellness data logged successfully!', 'success')
             return render_template('insights.html', insights=insights, log=log)
             
         except Exception as e:
-            logger.error(f"Error processing wellness data: {str(e)}")
+            logger.error(f"Error processing wellness data: {str(e)}", exc_info=True)
+            db.session.rollback()
             flash(f'Error processing data: {str(e)}', 'error')
             return redirect(url_for('log_data'))
     
