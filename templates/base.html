@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/well.png') }}" />
     <title>{% block title %}Wellness Oracle{% endblock %}</title>
     <style>
         * {
@@ -12,11 +13,10 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
+            background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url("{{ url_for('static', filename='img/well.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         .container {
@@ -39,9 +39,24 @@
         }
         
         nav .logo {
-            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
             font-weight: bold;
             color: #667eea;
+            gap: 0.75rem;
+        }
+
+        .site-icon {
+            width: 36px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .site-title {
+            line-height: 1;
         }
         
         nav ul {
@@ -155,13 +170,13 @@
             font-size: 2rem;
             margin-bottom: 1rem;
         }
+        
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body{% if background_image_url %} class="background-image"{% endif %}>
     <nav>
         <div class="container">
-            <div class="logo">🧘 Wellness Oracle</div>
             <ul>
                 {% if session.get('user_id') %}
                     <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
