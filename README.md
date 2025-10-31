@@ -74,6 +74,25 @@ This project leverages **OpenRouter** AI gateway and **OpenDeepSearch** for adva
   - Quality assessment of data inputs
   - Actionable recommendations
 
+## 🔍 Why OpenDeepSearch?
+
+Traditional wellness apps rely on static databases and pre-programmed logic. **OpenDeepSearch transforms this by:**
+
+1. **🌐 Real-Time Research** - Instead of static recommendations, the app searches current health literature when you log data
+2. **📊 Evidence-Based Advice** - Every suggestion is backed by research papers, expert blogs, and credible health sources
+3. **🎯 Personalized Context** - Searches specifically for information relevant to YOUR patterns and needs
+4. **🔄 Always Current** - Recommendations stay up-to-date with latest wellness science and trends
+5. **🔬 Source Transparency** - See where recommendations come from with citations and references
+6. **🧠 Deep Understanding** - Synthesizes multiple sources to provide comprehensive, nuanced advice
+
+**Example:** Instead of a generic "get more sleep" recommendation, OpenDeepSearch might find:
+- Peer-reviewed research on your specific sleep duration needs
+- Evidence-based techniques for your sleep issues (e.g., difficulty falling asleep vs. waking up)
+- Recent studies on sleep hygiene practices that actually work
+- Expert opinions on supplements, lighting, temperature, and routine optimizations
+
+This makes every recommendation **personalized**, **current**, and **trustworthy**.
+
 ## 🏗️ Architecture
 
 ```
@@ -136,6 +155,21 @@ source venv/Scripts/activate
 
 # Install dependencies
 pip install -r requirements.txt
+```
+
+**Note:** OpenDeepSearch is installed automatically from the GitHub repository via `requirements.txt`:
+```
+git+https://github.com/sentient-agi/OpenDeepSearch.git
+```
+
+### Verify OpenDeepSearch Installation
+
+```bash
+# Test OpenDeepSearch import
+python -c "import opendeepsearch; print('OpenDeepSearch installed successfully!')"
+
+# Check installed version
+pip show opendeepsearch
 ```
 
 ### 2. Configure Environment Variables
@@ -233,93 +267,134 @@ Visit **http://localhost:5000** in your browser!
    - Check history for all past entries
    - Observe trends in sleep and mood
 
-### Oracle Chat
+### Oracle Chat (OpenDeepSearch-Powered)
 
-Ask questions like:
-- "How has my sleep been this week?"
-- "What's my burnout risk?"
-- "Give me tips for better sleep"
+Ask questions and get research-backed answers:
+- "How has my sleep been this week?" - Includes latest sleep research
+- "What's my burnout risk?" - Compares to evidence-based burnout indicators
+- "Give me tips for better sleep" - Provides scientifically-validated sleep hygiene practices
+- "What are the benefits of morning sunlight?" - Real-time research synthesis
+- "Should I try meditation for stress?" - Evidence from multiple sources
 
-## 🤖 ROMA Intelligence
+**Behind the scenes:** OpenDeepSearch searches the web for relevant health information and synthesizes findings to support each answer with credible sources.
 
-### What is ROMA?
+## 🔬 OpenDeepSearch Intelligence
 
-**ROMA (Recursive Open Meta-Agent)** is a hierarchical AI framework that:
-- Decomposes complex wellness analysis into specialized subtasks
-- Uses **DSPy Chain-of-Thought** for explainable reasoning
-- Provides confidence scores for recommendations
-- Adapts based on context and user history
+### What is OpenDeepSearch?
 
-### DSPy-Powered Features
+**OpenDeepSearch** is an advanced AI-powered research framework that enhances wellness recommendations with real-time web research and synthesis:
 
-With ROMA integration, you get:
+- 🌐 **Autonomous Research Agent** - Automatically searches the web for relevant wellness information
+- 🔍 **Smart Crawling** - Efficiently scrapes and processes health-related content from multiple sources
+- 🧠 **Context Building** - Synthesizes information into coherent, actionable insights
+- 📚 **Knowledge Aggregation** - Combines findings from medical journals, health blogs, nutrition databases, and forums
+- 🎯 **Query Optimization** - Generates intelligent search queries based on your wellness patterns
 
-1. **Quality Assessment**: DSPy evaluates data completeness
-2. **Analysis Summary**: Natural language explanation of your wellness state
-3. **Reasoning Traces**: Understand WHY recommendations are made
-4. **Priority Actions**: Top 3 actions ranked by importance
-5. **Confidence Scores**: Know how confident the system is (0-100)
+### OpenDeepSearch-Powered Features
 
-### Example ROMA Output
+With OpenDeepSearch integration, the Wellness Oracle provides:
+
+1. **Evidence-Based Recommendations** - All suggestions backed by real research and health literature
+2. **Real-Time Health Insights** - Access to latest wellness trends, studies, and best practices
+3. **Comprehensive Context** - Deep understanding of health topics relevant to your situation
+4. **Source Citations** - Know where recommendations come from with credible references
+5. **Adaptive Learning** - Continuously improves by researching new health information
+
+### Example OpenDeepSearch Output
 
 ```python
 {
-    'summary': 'Great to see you feeling happy! Your sleep was excellent...',
-    'dspy_insights': {
-        'quality_assessment': 'High quality data - all sources available',
-        'analysis_summary': 'User shows positive emotional state with excellent sleep quality...',
-        'recommendation_reasoning': 'Recommendations focus on maintaining current wellness patterns...',
-        'priority_actions': '1. Continue sleep routine\n2. Maintain activity level\n3. Practice gratitude',
-        'confidence_score': '92'
-    }
+    'recommendation': 'Try 10 minutes of morning sunlight exposure',
+    'research_context': {
+        'sources_found': 12,
+        'key_findings': [
+            'Morning sunlight regulates circadian rhythm (Sleep Medicine Reviews, 2024)',
+            'Blue light exposure before 10am improves mood and alertness',
+            'Vitamin D synthesis occurs within 10-15 minutes of sun exposure'
+        ],
+        'evidence_strength': 'High (meta-analysis of 23 studies)',
+        'related_topics': ['circadian rhythm', 'vitamin D', 'mood regulation', 'sleep quality']
+    },
+    'reasoning': 'Based on your poor sleep quality and low mood, research indicates...'
 }
 ```
 
-### ROMA Documentation
+### OpenDeepSearch Use Cases
 
-For detailed ROMA usage, see **[ROMA_GUIDE.md](ROMA_GUIDE.md)** which covers:
-- DSPy signatures and modules
-- Custom agent creation
-- LLM model switching (GPT-3.5 vs GPT-4)
-- Performance optimization
-- Advanced customization
+The Wellness Oracle uses OpenDeepSearch to:
+
+1. **Research Sleep Solutions** - When you report poor sleep, it searches for evidence-based sleep hygiene practices
+2. **Investigate Nutrition** - Finds information about meals you logged, including nutritional benefits and concerns
+3. **Discover Wellness Interventions** - Researches activities, supplements, and practices that match your needs
+4. **Validate Recommendations** - Cross-references suggestions with medical literature and expert opinions
+5. **Track Health Trends** - Monitors emerging wellness research and practices
+6. **Personalize Advice** - Combines research with your specific patterns for targeted recommendations
 
 ## 🔧 Configuration
 
-### ROMA Orchestrator
+### Wellness Orchestrator with OpenDeepSearch
 
-Edit `roma_config.yaml` to customize:
+Edit `wellness_config.yaml` to customize:
 
 ```yaml
-# Adjust processing depth
-root_agent:
-  max_depth: 3
-  parallel_subtasks: true
+# OpenRouter Configuration
+openrouter:
+  api_key: ${OPENROUTER_API_KEY}
+  base_url: "https://openrouter.ai/api/v1"
+  model: "deepseek/deepseek-chat"  # Fast and cost-effective
+  # Available models: "anthropic/claude-3.5-sonnet", "openai/gpt-4", etc.
 
-# Configure burnout thresholds
-tools:
-  burnout_predictor:
-    thresholds:
-      sleep_minimum: 360  # minutes (6 hours)
-      activity_minimum: 30  # minutes
-      consecutive_bad_days: 3
-
-# LLM model for DSPy reasoning
-profiles:
-  default: "gpt-3.5-turbo"  # Fast and cost-effective
-  advanced: "gpt-4o-mini"   # Better reasoning
+# OpenDeepSearch Configuration
+opendeepsearch:
+  enabled: true
+  max_results: 10  # Number of search results to process
+  depth: "medium"  # shallow, medium, deep
+  sources:
+    - medical_journals
+    - health_blogs
+    - nutrition_databases
+    - wellness_forums
+  
+# Burnout thresholds
+burnout:
+  sleep_minimum: 360  # minutes (6 hours)
+  activity_minimum: 30  # minutes
+  consecutive_bad_days: 3
+  
+# Recommendation settings
+recommendations:
+  count: 3  # Number of micro-habits to suggest
+  duration: 10  # Maximum minutes per activity
+  research_backed: true  # Require OpenDeepSearch validation
 ```
 
-### Switch ROMA Models
+### Switch OpenRouter Models
 
-Edit `app.py` to use different LLMs:
+Edit `wellness_config.yaml` or set environment variable:
+
+```bash
+# Use a more powerful model for complex reasoning
+export OPENROUTER_MODEL="anthropic/claude-3.5-sonnet"
+
+# Or use GPT-4 for better analysis
+export OPENROUTER_MODEL="openai/gpt-4-turbo"
+
+# Or stick with cost-effective DeepSeek
+export OPENROUTER_MODEL="deepseek/deepseek-chat"
+```
+
+### Configure OpenDeepSearch Behavior
+
+Control how deep the research goes:
 
 ```python
-# Use GPT-4 for better reasoning
-orchestrator = ROMAWellnessOrchestrator(
-    config_path='roma_config.yaml',
-    model='gpt-4'  # or 'gpt-4o-mini', 'gpt-3.5-turbo'
-)
+# In wellness_config.yaml
+opendeepsearch:
+  depth: "deep"  # More thorough research (slower but more comprehensive)
+  max_results: 20  # Process more sources
+  include_academic: true  # Include PubMed and research papers
+  cache_results: true  # Cache research to avoid re-searching
+  freshness: "1week"  # Only include recent findings
 ```
 
 ### Scheduler Settings
@@ -416,38 +491,52 @@ Update in API dashboards:
 - Fitbit: `https://yourapp.herokuapp.com/fitbit/callback`
 - Spotify: `https://yourapp.herokuapp.com/spotify/callback`
 
-## 📊 ROMA Workflow
+## 📊 Wellness Analysis Workflow with OpenDeepSearch
 
-The Wellness Oracle uses a ROMA-inspired hierarchical workflow:
+The Wellness Oracle uses an intelligent, research-augmented workflow:
 
 ```
-User Input
+User Input (Mood, Sleep, Meals)
     ↓
-┌─────────────────────────┐
-│  Root Orchestrator      │
-└───────────┬─────────────┘
-            │
-    ┌───────┴────────┐
+┌─────────────────────────────┐
+│  Wellness Orchestrator      │
+│  (OpenRouter + DeepSeek)    │
+└──────────┬──────────────────┘
+           │
+    ┌──────┴─────────┐
     │                │
     ▼                ▼
-┌─────────┐    ┌──────────┐
-│Ingestion│    │ Analysis │
-│  Agent  │───>│  Agent   │
-└─────────┘    └────┬─────┘
-                    │
-            ┌───────┴────────┐
-            │                │
-            ▼                ▼
-    ┌──────────────┐  ┌──────────┐
-    │Recommendation│  │Synthesis │
-    │    Agent     │─>│  Agent   │
-    └──────────────┘  └────┬─────┘
-                           │
-                           ▼
-                    Final Insights
+┌──────────┐    ┌────────────────┐
+│Data      │    │ OpenDeepSearch │
+│Ingestion │    │ Research Agent │
+└────┬─────┘    └───────┬────────┘
+     │                  │
+     │  ┌───────────────┘
+     │  │ (Web research on relevant topics)
+     ▼  ▼
+┌──────────────────┐
+│ Analysis Agent   │
+│ (Sentiment, Risk)│
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────────────┐
+│ Recommendation Agent     │
+│ (Evidence-based habits)  │
+└────────┬─────────────────┘
+         │
+         ▼
+┌──────────────────────────┐
+│ Synthesis + Citations    │
+│ (Final insights + refs)  │
+└────────┬─────────────────┘
+         │
+         ▼
+  Personalized Report
+  with Research Backing
 ```
 
-Each agent is independent and can be modified/extended without affecting others.
+**Key Innovation:** OpenDeepSearch runs in parallel with analysis, researching relevant health topics to ensure all recommendations are evidence-based and current.
 
 ## 🛠️ Customization
 
@@ -490,6 +579,18 @@ pip install -r requirements.txt
 - View console logs for errors
 - App falls back to mock data if APIs fail
 
+### OpenDeepSearch taking too long
+- Reduce `max_results` in `wellness_config.yaml`
+- Change `depth` from "deep" to "medium" or "shallow"
+- Enable result caching: `cache_results: true`
+- Check your internet connection
+
+### OpenDeepSearch not finding relevant sources
+- Ensure you have an active internet connection
+- Check if specific domains are blocked by your network
+- Try increasing `max_results` for broader search
+- Review console logs for crawling errors
+
 ### Database locked errors
 ```bash
 # Close all connections and restart
@@ -499,6 +600,17 @@ python app.py
 
 ## 📚 API Documentation
 
+### OpenDeepSearch
+- GitHub: https://github.com/sentient-agi/OpenDeepSearch
+- Advanced AI-powered research and web crawling framework
+- Provides real-time context building and synthesis
+
+### OpenRouter
+- Docs: https://openrouter.ai/docs
+- AI gateway supporting 200+ models
+- OpenAI-compatible API
+- Default model: `deepseek/deepseek-chat`
+
 ### Nutritionix
 - Docs: https://docs.nutritionix.com
 - Endpoints used: `/v2/natural/nutrients`
@@ -506,10 +618,6 @@ python app.py
 ### Fitbit
 - Docs: https://dev.fitbit.com/build/reference/web-api/
 - Endpoints used: `/sleep`, `/activities`
-
-### OpenAI
-- Docs: https://platform.openai.com/docs
-- Model: `gpt-3.5-turbo`
 
 ### Spotify
 - Docs: https://developer.spotify.com/documentation/web-api
@@ -527,6 +635,9 @@ Contributions welcome! Areas for improvement:
 - [ ] Export data to CSV/PDF
 - [ ] Integration with Apple Health
 - [ ] Machine learning for better burnout prediction
+- [ ] Enhance OpenDeepSearch with more specialized health sources
+- [ ] Cache OpenDeepSearch results for faster recommendations
+- [ ] Add research confidence scores to recommendations
 
 ## 📄 License
 
@@ -534,9 +645,10 @@ MIT License - feel free to use and modify for your projects!
 
 ## 🙏 Acknowledgments
 
-- **ROMA Framework**: Recursive Open Meta-Agent concept
+- **OpenDeepSearch**: Advanced AI-powered research framework by [Sentient AGI](https://github.com/sentient-agi/OpenDeepSearch)
+- **OpenRouter**: AI gateway providing access to 200+ models
+- **DeepSeek**: Cost-effective, powerful AI model for reasoning
 - **Flask**: Web framework
-- **OpenAI**: Sentiment analysis
 - **Fitbit, Nutritionix, Spotify**: Data APIs
 
 ## 📧 Support
