@@ -11,16 +11,27 @@ Wellness Oracle is an intelligent web application that analyzes your sleep, meal
 
 ---
 
-## 🎯 AI-Powered with OpenRouter + Open Deep Search
+## 🎯 AI-Powered with OpenRouter + OpenDeepSearch
 
-This project uses **OpenRouter** as the AI gateway with **Open Deep Search** for enhanced capabilities:
+This project leverages **OpenRouter** AI gateway and **OpenDeepSearch** for advanced wellness intelligence:
 
-- 🤖 **OpenRouter Gateway** - Unified access to multiple AI models (default: deepseek/deepseek-chat)
-- 🧠 **Flexible Model Selection** - Easily switch between different AI models
-- 🔍 **Open Deep Search** - Enhanced web search and context building
-- 🔄 **OpenAI-Compatible** - Seamless integration using OpenAI SDK
-- ⚡ **High Performance** - Fast inference with strong analytical capabilities
-- 🎯 **Hierarchical Agents** - Modular wellness analysis workflow
+### 🔍 OpenDeepSearch Integration
+
+**OpenDeepSearch** is an advanced AI-powered search and research framework that enhances wellness recommendations:
+
+- 🌐 **Real-Time Web Research** - Searches and synthesizes latest wellness research, health trends, and evidence-based practices
+- 🧠 **Context-Aware Analysis** - Builds comprehensive context about health topics, supplements, exercises, and interventions
+- 📊 **Multi-Source Synthesis** - Aggregates information from medical journals, fitness blogs, nutrition databases, and health forums
+- 🎯 **Intelligent Query Generation** - Automatically formulates research questions based on user's wellness patterns
+- ⚡ **Rapid Knowledge Retrieval** - Quickly finds relevant health information to support personalized recommendations
+- 🔬 **Evidence-Based Insights** - Cross-references multiple sources to provide scientifically-backed wellness advice
+
+### 🤖 OpenRouter AI Gateway
+
+- 🔄 **Multi-Model Support** - Access 200+ AI models through a unified API (default: deepseek/deepseek-chat)
+- 💰 **Cost-Effective** - Choose the right model for your needs and budget
+- � **OpenAI-Compatible** - Drop-in replacement using OpenAI SDK
+- ⚡ **High Performance** - Fast inference with powerful reasoning capabilities
 
 ---
 
@@ -31,12 +42,14 @@ This project uses **OpenRouter** as the AI gateway with **Open Deep Search** for
   - Nutritionix for meal/nutrition analysis
   - Manual data entry fallback
 
-- 🧠 **AI-Powered Analysis with OpenRouter**
+- 🧠 **AI-Powered Analysis with OpenRouter + OpenDeepSearch**
   - **OpenRouter** gateway for advanced AI reasoning
-  - **Open Deep Search** for context-aware insights
+  - **OpenDeepSearch** for real-time wellness research and context building
+  - Evidence-based recommendations backed by latest health research
   - Sentiment analysis and emotion detection
   - Burnout risk prediction
   - Pattern recognition across historical data
+  - Automatic research on relevant health topics and interventions
 
 - 🎯 **Personalized Recommendations**
   - Daily micro-habits (5-10 minute activities)
