@@ -1,6 +1,6 @@
 # 🧘 Wellness Oracle
 
-**Your AI-Powered Personalized Health Coach with OpenRouter + Open Deep Search**
+**Your AI-Powered Personalized Health Coach with OpenRouter + Sentient AGI's Open Deep Search**
 
 Wellness Oracle is an intelligent web application that analyzes your sleep, meals, and mood to provide hyper-personalized wellness recommendations. Powered by **OpenRouter** AI gateway and **Open Deep Search**, it integrates with Fitbit, Nutritionix, and Spotify to deliver comprehensive health insights with AI-driven analysis.
 
@@ -663,3 +663,4 @@ For questions or issues:
 **Built with ❤️ for better wellness through AI**
 
 MVP Build Time: ~2 weeks | Last Updated: October 2025
+
