@@ -33,6 +33,31 @@ scheduler = BackgroundScheduler()
 
 
 # ============================================================================
+# DATABASE INITIALIZATION
+# ============================================================================
+
+def init_db():
+    """Initialize database tables"""
+    with app.app_context():
+        db.create_all()
+        logger.info("Database tables created")
+
+
+# Create tables when app starts (important for production deployments)
+with app.app_context():
+    try:
+        db.create_all()
+        logger.info("Database initialized successfully")
+        
+        # Create upload folder if it doesn't exist
+        if not os.path.exists(Config.UPLOAD_FOLDER):
+            os.makedirs(Config.UPLOAD_FOLDER)
+            logger.info(f"Created upload folder: {Config.UPLOAD_FOLDER}")
+    except Exception as e:
+        logger.error(f"Error initializing application: {e}")
+
+
+# ============================================================================
 # MAIN ROUTES
 # ============================================================================
 
@@ -423,12 +448,8 @@ def send_daily_nudges():
 # ============================================================================
 
 def init_app():
-    """Initialize application"""
+    """Initialize application (for local development)"""
     with app.app_context():
-        # Create database tables
-        db.create_all()
-        logger.info("Database initialized")
-        
         # Create upload folder if it doesn't exist
         if not os.path.exists(Config.UPLOAD_FOLDER):
             os.makedirs(Config.UPLOAD_FOLDER)

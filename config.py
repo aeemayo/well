@@ -11,7 +11,13 @@ class Config:
     DEBUG = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
     
     # Database
-    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///users.db')
+    # Check for DATABASE_URL (Render's PostgreSQL) first, then fall back to SQLite
+    database_url = os.getenv('DATABASE_URL')
+    if database_url and database_url.startswith('postgres://'):
+        # Render uses postgres://, but SQLAlchemy needs postgresql://
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    
+    SQLALCHEMY_DATABASE_URI = database_url or os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///users.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # API Keys

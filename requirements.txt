@@ -11,3 +11,4 @@ pytest
 openai
 git+https://github.com/sentient-agi/OpenDeepSearch.git
 gunicorn
+psycopg2-binary
