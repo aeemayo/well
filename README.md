@@ -53,9 +53,10 @@ This project leverages **OpenRouter** AI gateway and **OpenDeepSearch** for adva
 
 - 🎯 **Personalized Recommendations**
   - Daily micro-habits (5-10 minute activities)
-  - Context-aware wellness interventions
+  - Context-aware wellness interventions powered by OpenDeepSearch
   - Adaptive suggestions based on user history
-  - **Reasoning explanations** for each recommendation
+  - **Evidence-based reasoning** for each recommendation with research citations
+  - Real-time research on emerging wellness trends and practices
 
 - 🎵 **Mood-Based Playlists**
   - Automatic Spotify playlist generation
