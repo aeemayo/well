@@ -662,5 +662,6 @@ For questions or issues:
 
 **Built with ❤️ for better wellness through AI**
 
-MVP Build Time: ~2 weeks | Last Updated: October 2025
+
+
 
