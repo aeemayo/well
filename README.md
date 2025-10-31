@@ -410,29 +410,6 @@ scheduler.add_job(
 )
 ```
 
-## 🧪 Testing
-
-### Run Without API Keys
-
-The app includes mock data generators:
-- Works offline with simulated data
-- Perfect for development/testing
-- No API costs incurred
-
-### Manual Testing
-
-```bash
-# Test individual components
-python -c "from utils import nutrition_analyzer; print(nutrition_analyzer.analyze_meal('apple'))"
-```
-
-### Unit Tests (Future)
-
-```bash
-# When tests are added
-pytest tests/
-```
-
 ## 🗄️ Database
 
 SQLite database (`users.db`) stores:
@@ -447,49 +424,6 @@ SQLite database (`users.db`) stores:
 rm users.db
 python app.py  # Auto-creates on startup
 ```
-
-## 🔐 Security Notes
-
-⚠️ **For Production Deployment:**
-
-1. **Encrypt OAuth Tokens**: Current storage is plain text
-2. **Use HTTPS**: Required for OAuth callbacks
-3. **Secure SECRET_KEY**: Use environment variable
-4. **Rate Limiting**: Add Flask-Limiter
-5. **Input Validation**: Already basic, enhance as needed
-6. **Authentication**: Current is session-based (username only)
-
-## 🚀 Deployment
-
-### Heroku Deployment
-
-```bash
-# Create Procfile
-echo "web: gunicorn app:app" > Procfile
-
-# Add gunicorn to requirements
-pip install gunicorn
-pip freeze > requirements.txt
-
-# Deploy
-heroku create wellness-oracle-app
-git push heroku main
-```
-
-### Environment Variables
-
-Set on hosting platform:
-```bash
-heroku config:set OPENAI_API_KEY=your_key
-heroku config:set SECRET_KEY=your_secret
-# ... etc
-```
-
-### Update Callback URLs
-
-Update in API dashboards:
-- Fitbit: `https://yourapp.herokuapp.com/fitbit/callback`
-- Spotify: `https://yourapp.herokuapp.com/spotify/callback`
 
 ## 📊 Wellness Analysis Workflow with OpenDeepSearch
 
@@ -538,58 +472,6 @@ User Input (Mood, Sleep, Meals)
 
 **Key Innovation:** OpenDeepSearch runs in parallel with analysis, researching relevant health topics to ensure all recommendations are evidence-based and current.
 
-## 🛠️ Customization
-
-### Add New Data Sources
-
-1. Create wrapper in `utils/new_source.py`
-2. Add to `IngestionAgent` in `agents/wellness.py`
-3. Update `roma_config.yaml`
-
-### Custom Recommendation Logic
-
-Edit `RecommendationAgent.execute()` in `agents/wellness.py`
-
-### Extend Database
-
-Add fields to models in `models.py`, then:
-```bash
-# In production, use migrations (Flask-Migrate)
-# For now, drop and recreate:
-rm users.db
-python app.py
-```
-
-## 🐛 Troubleshooting
-
-### "Import errors" when running
-```bash
-# Ensure virtual environment is activated
-source venv/Scripts/activate  # Windows bash
-pip install -r requirements.txt
-```
-
-### OAuth callbacks fail
-- Check callback URLs match in API dashboards
-- Ensure using `http://localhost:5000` (not 127.0.0.1)
-- For Spotify, token expires - reconnect periodically
-
-### No recommendations appearing
-- Check API keys in `.env`
-- View console logs for errors
-- App falls back to mock data if APIs fail
-
-### OpenDeepSearch taking too long
-- Reduce `max_results` in `wellness_config.yaml`
-- Change `depth` from "deep" to "medium" or "shallow"
-- Enable result caching: `cache_results: true`
-- Check your internet connection
-
-### OpenDeepSearch not finding relevant sources
-- Ensure you have an active internet connection
-- Check if specific domains are blocked by your network
-- Try increasing `max_results` for broader search
-- Review console logs for crawling errors
 
 ### Database locked errors
 ```bash
@@ -611,10 +493,6 @@ python app.py
 - OpenAI-compatible API
 - Default model: `deepseek/deepseek-chat`
 
-### Nutritionix
-- Docs: https://docs.nutritionix.com
-- Endpoints used: `/v2/natural/nutrients`
-
 ### Fitbit
 - Docs: https://dev.fitbit.com/build/reference/web-api/
 - Endpoints used: `/sleep`, `/activities`
@@ -623,21 +501,6 @@ python app.py
 - Docs: https://developer.spotify.com/documentation/web-api
 - Endpoints used: `/recommendations`, `/playlists`
 
-## 🤝 Contributing
-
-Contributions welcome! Areas for improvement:
-
-- [ ] Add pytest unit tests
-- [ ] Implement proper authentication (JWT/OAuth)
-- [ ] Add data visualization charts
-- [ ] Email/SMS notifications for nudges
-- [ ] Mobile responsive improvements
-- [ ] Export data to CSV/PDF
-- [ ] Integration with Apple Health
-- [ ] Machine learning for better burnout prediction
-- [ ] Enhance OpenDeepSearch with more specialized health sources
-- [ ] Cache OpenDeepSearch results for faster recommendations
-- [ ] Add research confidence scores to recommendations
 
 ## 📄 License
 
@@ -647,9 +510,8 @@ MIT License - feel free to use and modify for your projects!
 
 - **OpenDeepSearch**: Advanced AI-powered research framework by [Sentient AGI](https://github.com/sentient-agi/OpenDeepSearch)
 - **OpenRouter**: AI gateway providing access to 200+ models
-- **DeepSeek**: Cost-effective, powerful AI model for reasoning
 - **Flask**: Web framework
-- **Fitbit, Nutritionix, Spotify**: Data APIs
+- **Fitbit, Spotify**: Data APIs
 
 ## 📧 Support
 
@@ -661,6 +523,7 @@ For questions or issues:
 ---
 
 **Built with ❤️ for better wellness through AI**
+
 
 
 
