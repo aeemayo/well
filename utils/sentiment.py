@@ -125,6 +125,39 @@ class SentimentAnalyzer:
         except Exception as e:
             logger.error(f"Error generating habits: {str(e)}")
             return self._mock_habits(sentiment, emotion)
+            
+    def answer_query(self, query: str, context: str = None) -> dict:
+        """
+        Answer general wellness queries using the LLM.
+        """
+        if not self.client:
+            return {'response': "I'm offline right now, but I'm here to help with your wellness!", 'success': False}
+        
+        try:
+            messages = [
+                {
+                    "role": "system",
+                    "content": "You are a knowledgeable and empathetic wellness oracle. Provide helpful, concise, and evidence-based answers to health and wellness questions."
+                }
+            ]
+            if context:
+                messages.append({"role": "system", "content": f"User Context: {context}"})
+            
+            messages.append({"role": "user", "content": query})
+            
+            response = self.client.chat.completions.create(
+                model=Config.OPENROUTER_MODEL,
+                messages=messages,
+                max_tokens=250,
+                temperature=0.7
+            )
+            
+            answer = response.choices[0].message.content
+            return {'response': answer, 'success': True, 'type': 'llm_response'}
+            
+        except Exception as e:
+            logger.error(f"Error answering query: {str(e)}")
+            return {'response': "I'm having trouble connecting to my knowledge base right now. Please try again later.", 'success': False}
     
     def _mock_analysis(self, text: str) -> dict:
         """Mock sentiment analysis for testing"""

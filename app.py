@@ -349,32 +349,30 @@ def _get_user_history(user_id: str, days: int = 7) -> list:
 
 
 def _handle_oracle_query(query: str, user_id: str) -> dict:
-    """Handle oracle chat queries (simplified for MVP)"""
-    query_lower = query.lower()
+    """Handle oracle chat queries using OpenRouter"""
+    from utils import sentiment_analyzer
     
-    # Simple keyword matching (can be replaced with LLM)
-    if 'sleep' in query_lower:
-        recent_log = WellnessLog.get_latest_by_user(user_id)
-        
-        if recent_log:
-            sleep_data = recent_log.get_sleep_data()
-            return {
-                'response': f"Your recent sleep quality is {recent_log.sleep_quality}. "
-                           f"You slept about {sleep_data.get('hours', 'unknown')} hours.",
-                'type': 'sleep_info'
-            }
+    context = ""
+    recent_log = WellnessLog.get_latest_by_user(user_id)
     
-    elif 'burnout' in query_lower or 'stress' in query_lower:
-        recent_log = WellnessLog.get_latest_by_user(user_id)
-        
-        if recent_log:
-            recs = recent_log.get_recommendations()
-            return {
-                'response': f"Your burnout risk is {recent_log.burnout_risk}. "
-                           f"Here are some interventions: {', '.join(recs.get('interventions', []))}",
-                'type': 'burnout_info'
-            }
+    if recent_log:
+        sleep_data = recent_log.get_sleep_data()
+        context = (
+            f"The user recently reported a sleep quality of '{recent_log.sleep_quality}' "
+            f"and slept about {sleep_data.get('hours', 'unknown')} hours. "
+            f"Their burnout risk is '{recent_log.burnout_risk}'. "
+        )
     
+    # Use LLM to answer the query
+    result = sentiment_analyzer.answer_query(query, context)
+    
+    if result.get('success'):
+        return {
+            'response': result['response'],
+            'type': 'llm_answer'
+        }
+    
+    # Fallback to general message if LLM fails
     return {
         'response': "I'm here to help with your wellness! Try asking about sleep, stress, or mood.",
         'type': 'general'
