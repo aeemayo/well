@@ -31,12 +31,23 @@ def _init_firestore():
     """Initialize Firebase Admin SDK and return Firestore client"""
     try:
         if not firebase_admin._apps:
+            cred_json_str = os.getenv('FIREBASE_CREDENTIALS_JSON')
             cred_path = os.getenv('FIREBASE_CREDENTIALS_PATH')
-            if cred_path and os.path.exists(cred_path):
+            
+            if cred_json_str:
+                # Load credentials directly from a JSON string (great for Render env vars)
+                import json
+                cred_dict = json.loads(cred_json_str)
+                cred = credentials.Certificate(cred_dict)
+                firebase_admin.initialize_app(cred)
+                logger.info("Firebase initialized using FIREBASE_CREDENTIALS_JSON env var")
+            elif cred_path and os.path.exists(cred_path):
+                # Load credentials from file
                 cred = credentials.Certificate(cred_path)
                 firebase_admin.initialize_app(cred)
                 logger.info(f"Firebase initialized with service account: {cred_path}")
             else:
+                # Fallback to default
                 firebase_admin.initialize_app()
                 logger.info("Firebase initialized with default credentials")
         return firestore.client()
