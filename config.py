@@ -10,15 +10,8 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
     DEBUG = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
     
-    # Database
-    # Check for DATABASE_URL (Render's PostgreSQL) first, then fall back to SQLite
-    database_url = os.getenv('DATABASE_URL')
-    if database_url and database_url.startswith('postgres://'):
-        # Render uses postgres://, but SQLAlchemy needs postgresql://
-        database_url = database_url.replace('postgres://', 'postgresql://', 1)
-    
-    SQLALCHEMY_DATABASE_URI = database_url or os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///users.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Firebase / Firestore
+    FIREBASE_CREDENTIALS_PATH = os.getenv('FIREBASE_CREDENTIALS_PATH')
     
     # API Keys
     FITBIT_CLIENT_ID = os.getenv('FITBIT_CLIENT_ID')

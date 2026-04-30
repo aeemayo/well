@@ -37,3 +37,6 @@ htmlcov/
 # User uploads
 uploads/
 well_env/
+
+# Firebase credentials
+serviceAccountKey.json

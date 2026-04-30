@@ -13,8 +13,19 @@ def test_api_connections():
     """Test all API connections"""
     from utils import sentiment_analyzer
     from config import Config
+    from models import get_db
     
     print("🧪 Testing API Connections\n" + "="*50)
+    
+    # Test Firestore
+    print("\n🔥 Testing Firestore Connection...")
+    try:
+        db = get_db()
+        # Try a simple read to verify connectivity
+        db.collection('_health_check').limit(1).get()
+        print("✅ Firestore: Connected successfully")
+    except Exception as e:
+        print(f"❌ Firestore error: {e}")
     
     # Test OpenAI Sentiment
     print("\n💭 Testing OpenAI Sentiment Analysis...")
@@ -40,48 +51,55 @@ def test_api_connections():
     else:
         print("⚠️ Spotify credentials not configured (will use mock data)")
     
+    # Check Firebase config
+    print("\n🔥 Checking Firebase Configuration...")
+    if Config.FIREBASE_CREDENTIALS_PATH:
+        print(f"✅ Firebase credentials path: {Config.FIREBASE_CREDENTIALS_PATH}")
+    else:
+        print("⚠️ FIREBASE_CREDENTIALS_PATH not set (using default credentials)")
+    
     print("\n" + "="*50)
     print("Testing complete! Check results above.")
 
 
 def init_sample_data():
-    """Initialize database with sample data for testing"""
-    from app import app, db
+    """Initialize Firestore with sample data for testing"""
     from models import User, WellnessLog
     from datetime import date, timedelta
     
-    with app.app_context():
-        print("🔧 Initializing sample data...")
+    print("🔧 Initializing sample data...")
+    
+    # Create sample user
+    user = User.get_by_username('demo')
+    if not user:
+        user = User(username='demo', email='demo@wellness.local')
+        user.save()
+        print("✅ Created demo user (username: demo)")
+    else:
+        print("ℹ️ Demo user already exists")
+    
+    # Create sample logs
+    created = 0
+    for i in range(7):
+        log_date = date.today() - timedelta(days=i)
+        existing = WellnessLog.get_by_user_and_date(user.id, log_date)
         
-        # Create sample user
-        user = User.query.filter_by(username='demo').first()
-        if not user:
-            user = User(username='demo', email='demo@wellness.local')
-            db.session.add(user)
-            db.session.commit()
-            print("✅ Created demo user (username: demo)")
-        
-        # Create sample logs
-        for i in range(7):
-            log_date = date.today() - timedelta(days=i)
-            existing = WellnessLog.query.filter_by(user_id=user.id, date=log_date).first()
-            
-            if not existing:
-                log = WellnessLog(
-                    user_id=user.id,
-                    date=log_date,
-                    mood_note=f"Sample mood note for day {i+1}",
-                    sentiment='positive' if i % 3 == 0 else 'neutral',
-                    emotion='happy' if i % 3 == 0 else 'calm',
-                    burnout_risk='low',
-                    sleep_quality='good',
-                    activity_level='moderate'
-                )
-                db.session.add(log)
-        
-        db.session.commit()
-        print(f"✅ Created 7 days of sample wellness logs")
-        print("\nYou can now login with username: demo")
+        if not existing:
+            log = WellnessLog(
+                user_id=user.id,
+                date=log_date,
+                mood_note=f"Sample mood note for day {i+1}",
+                sentiment='positive' if i % 3 == 0 else 'neutral',
+                emotion='happy' if i % 3 == 0 else 'calm',
+                burnout_risk='low',
+                sleep_quality='good',
+                activity_level='moderate'
+            )
+            log.save()
+            created += 1
+    
+    print(f"✅ Created {created} new sample wellness logs (7 days total)")
+    print("\nYou can now login with username: demo")
 
 
 if __name__ == '__main__':
